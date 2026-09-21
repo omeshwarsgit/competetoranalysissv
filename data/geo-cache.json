@@ -1,0 +1,74 @@
+{
+  "1": {
+    "lat": 15.5264541225743,
+    "lng": 73.7866923681103,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "2": {
+    "lat": 15.5885403012974,
+    "lng": 73.7629379473602,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "3": {
+    "lat": 15.5163242455062,
+    "lng": 73.779158209787,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "4": {
+    "lat": 15.5102957,
+    "lng": 73.7738234,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "5": {
+    "lat": 15.562794524583136,
+    "lng": 73.76231541495336,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "6": {
+    "lat": 15.5628001290859,
+    "lng": 73.7623022110882,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "luxury-indo-portuguese-villa-with-a-private-pool": {
+    "lat": 15.5264541225743,
+    "lng": 73.7866923681103,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "casa-2565-anjuna-north-goa": {
+    "lat": 15.5885403012974,
+    "lng": 73.7629379473602,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "mini-paradise-studio-candolim-north-goa": {
+    "lat": 15.5163242455062,
+    "lng": 73.779158209787,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "olive-1-bhk-apartment-candolim-north-goa": {
+    "lat": 15.5102957,
+    "lng": 73.7738234,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "studio-109-arpora-north-goa": {
+    "lat": 15.562794524583136,
+    "lng": 73.76231541495336,
+    "approximate": false,
+    "source": "booking_property_page"
+  },
+  "koral-1-bhk-arpora-north-goa": {
+    "lat": 15.5628001290859,
+    "lng": 73.7623022110882,
+    "approximate": false,
+    "source": "booking_property_page"
+  }
+}

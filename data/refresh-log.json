@@ -1,0 +1,17 @@
+[
+  {
+    "runAt": "2026-08-11T07:18:43.114Z",
+    "property": null,
+    "refreshExit": 0,
+    "syncExit": null,
+    "ok": true,
+    "summary": {
+      "today": "2026-08-11",
+      "scrapedAt": "2026-08-11T07:18:43.027Z",
+      "ownProperties": 6,
+      "competitors": 62,
+      "pricedNights": 102,
+      "soldOutNights": 78
+    }
+  }
+]

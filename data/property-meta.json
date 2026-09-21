@@ -1,0 +1,80 @@
+{
+  "1": {
+    "stars": null,
+    "type": "Hotel",
+    "city": "Marra",
+    "area": "Saipem, Pilerne - Candolim Rd, 403515 Nerul, India",
+    "bookingLocality": "Saipem, Pilerne - Candolim Rd",
+    "district": "North Goa",
+    "state": "Goa",
+    "lat": 15.5264541225743,
+    "lon": 73.7866923681103,
+    "slug": "luxury-indo-portuguese-villa-with-a-private-pool",
+    "updatedAt": "2026-08-10T17:19:27.735Z"
+  },
+  "2": {
+    "stars": null,
+    "type": "Hotel",
+    "city": "Vagator",
+    "area": "Mapusa- Anjuna Road Villa No. 6, 403519 Anjuna, India",
+    "bookingLocality": "Mapusa- Anjuna Road Villa No. 6",
+    "district": "North Goa",
+    "state": "Goa",
+    "lat": 15.5885403012974,
+    "lon": 73.7629379473602,
+    "slug": "casa-2565-anjuna-north-goa",
+    "updatedAt": "2026-08-10T17:19:27.736Z"
+  },
+  "3": {
+    "stars": null,
+    "type": "Hotel",
+    "city": "Marra",
+    "area": "Pilerne - Candolim Road, 403515 Candolim, India",
+    "bookingLocality": "Pilerne - Candolim Road",
+    "district": "North Goa",
+    "state": "Goa",
+    "lat": 15.5163242455062,
+    "lon": 73.779158209787,
+    "slug": "mini-paradise-studio-candolim-north-goa",
+    "updatedAt": "2026-08-10T17:19:27.736Z"
+  },
+  "4": {
+    "stars": null,
+    "type": "Hotel",
+    "city": "Sinquerim",
+    "area": "monash kushal resorts 401, 403515 Candolim, India",
+    "bookingLocality": "monash kushal resorts 401",
+    "district": "North Goa",
+    "state": "Goa",
+    "lat": 15.5102957,
+    "lon": 73.7738234,
+    "slug": "olive-1-bhk-apartment-candolim-north-goa",
+    "updatedAt": "2026-08-10T17:19:27.736Z"
+  },
+  "5": {
+    "stars": null,
+    "type": "Hotel",
+    "city": "Arpora",
+    "area": "Arpora - Calangute Road, 403519 Arpora, India",
+    "bookingLocality": "Arpora - Calangute Road",
+    "district": "North Goa",
+    "state": "Goa",
+    "lat": 15.562794524583136,
+    "lon": 73.76231541495336,
+    "slug": "studio-109-arpora-north-goa",
+    "updatedAt": "2026-08-10T17:19:27.736Z"
+  },
+  "6": {
+    "stars": null,
+    "type": "Hotel",
+    "city": "Arpora",
+    "area": "Arpora - Calangute Road, 403519 Arpora, India",
+    "bookingLocality": "Arpora - Calangute Road",
+    "district": "North Goa",
+    "state": "Goa",
+    "lat": 15.5628001290859,
+    "lon": 73.7623022110882,
+    "slug": "koral-1-bhk-arpora-north-goa",
+    "updatedAt": "2026-08-10T17:19:27.736Z"
+  }
+}

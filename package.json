@@ -1,0 +1,38 @@
+{
+  "name": "competitor-pricing-monitor",
+  "version": "1.0.0",
+  "description": "Daily Booking.com competitor pricing scraper for StayVista properties.",
+  "private": true,
+  "scripts": {
+    "test": "node --test",
+    "verify": "node --test && node verify-dashboard.js",
+    "verify:dashboard": "node verify-dashboard.js",
+    "refresh": "node refresh.js && node serve.js",
+    "scrape": "node refresh.js",
+    "scrape:scheduled": "node scheduled-refresh.js",
+    "serve": "node serve.js",
+    "validate": "node import-properties.js --check",
+    "import": "node import-properties.js",
+    "import:offline": "node import-properties.js --offline",
+    "discover": "node discover-all.js",
+    "discover:prices": "node fetch-discover-prices.js",
+    "coords": "node resolve-property-coords.js",
+    "prune": "node prune-to-csv.js",
+    "prune:dry": "node prune-to-csv.js --dry-run",
+    "pool:dry": "node pool-market.js --dry-run",
+    "inventory": "node sync-inventory.js",
+    "inventory:dry": "node sync-inventory.js --dry-run",
+    "sync": "node sync-sheets.js",
+    "sync:dry": "node sync-sheets.js --dry-run",
+    "sync:watch": "node sync-sheets.js --watch",
+    "scrape:sync": "node refresh.js && node sync-sheets.js --trigger=post-refresh",
+    "report": "node build-price-report.js",
+    "sync:health": "node sync-sheets.js --health"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "playwright": "^1.45.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "_comment": "Copy to config/sheets.json. Use EITHER the Apps Script block or the service-account block. See SHEETS-SETUP.md.",
+
+  "_appscript": "RECOMMENDED — no Google Cloud project or service-account key needed.",
+  "webAppUrl": "https://script.google.com/macros/s/PASTE_DEPLOYMENT_ID/exec",
+  "sharedSecret": "PASTE_THE_SAME_LONG_RANDOM_STRING_AS_IN_Code.gs",
+
+  "_serviceAccount": "ALTERNATIVE — needs config/google-service-account.json and the sheet shared with its client_email. Delete webAppUrl above to use this.",
+  "spreadsheetId": "",
+
+  "syncIntervalSec": 900,
+  "chunkSize": 2000
+}

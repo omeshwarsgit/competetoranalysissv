@@ -1,0 +1,252 @@
+[
+  {
+    "at": "2026-09-16T13:23:13.837Z",
+    "action": "discover-commit",
+    "propId": "6",
+    "adding": 2,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 3,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-09-16T13:23:05.029Z",
+    "action": "discover-commit",
+    "propId": "6",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 3,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-09-16T13:22:59.044Z",
+    "action": "discover-commit",
+    "propId": "6",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 3,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-09-16T13:22:53.463Z",
+    "action": "discover-commit",
+    "propId": "6",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 3,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-09-16T13:22:52.720Z",
+    "action": "discover-commit",
+    "propId": "6",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 3,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-09-16T13:22:50.841Z",
+    "action": "discover-commit",
+    "propId": "6",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 3,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-09-03T11:22:02.024Z",
+    "action": "discover-commit",
+    "propId": "1",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 2,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-08-30T06:14:52.866Z",
+    "action": "discover-commit",
+    "propId": "1",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 1,
+      "2": 0,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-08-21T16:20:19.933Z",
+    "action": "reset-competitors",
+    "propertyId": "2",
+    "removing": 11,
+    "removedIds": [
+      "granpas_inn",
+      "avontade_suites_anjuna_north_goa",
+      "de_lagom_comfort_anjuna_beach",
+      "mansion_haus",
+      "verandah_goa",
+      "the_hammock_goa",
+      "anantya_at_anamiva",
+      "staymaster_casa_sisan_3bhk_private_pool_anjuna",
+      "stayvista_at_brew_amp_breeze",
+      "saffronstays_kapok_house",
+      "backspace"
+    ],
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 1,
+      "2": 11,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-08-21T16:18:12.651Z",
+    "action": "discover-commit",
+    "propId": "2",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 1,
+      "2": 10,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-08-14T11:45:41.819Z",
+    "action": "discover-commit",
+    "propId": "2",
+    "adding": 1,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 1,
+      "2": 10,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-08-11T13:19:16.869Z",
+    "action": "discover-commit",
+    "propId": "1",
+    "adding": 2,
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 0,
+      "2": 10,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  },
+  {
+    "at": "2026-08-11T13:17:23.368Z",
+    "action": "reset-competitors",
+    "propertyId": "1",
+    "removing": 14,
+    "removedIds": [
+      "beautiful_studio_apartment_near_candolim_beach",
+      "tranquill_riverside",
+      "hilton_goa_resort",
+      "antarim_resort",
+      "kingsgate",
+      "wildflower_villas",
+      "elivaas_kamerios_maris_1bhk_apartment_with_jacuzzi",
+      "casa_de_menorah",
+      "stayvista_at_casa_chalora",
+      "stayvista_at_casa_saipem",
+      "pilerne_goa",
+      "elivaas_1_bhk_with_jacuzzi_amp_lift_kamerios_brisa",
+      "elivaas_villa_seine_indo_portuguese_3_bhk_villa_with_private_pool_near_candolim",
+      "stayvista_at_mangrove_forest_villa"
+    ],
+    "from": "127.0.0.1",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.0.0 Safari/537.36",
+    "referer": "http://localhost:3000/",
+    "trackedBefore": {
+      "1": 14,
+      "2": 10,
+      "3": 12,
+      "4": 15,
+      "5": 13,
+      "6": 13
+    }
+  }
+]

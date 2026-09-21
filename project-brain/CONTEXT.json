@@ -1,0 +1,528 @@
+{
+  "$schema": "self-describing snapshot of the whole project; keep in sync with the .md files",
+  "meta": {
+    "brainVersion": "1.0",
+    "lastUpdated": "2026-09-21 16:17",
+    "updatedBy": "Gemini 3.8 Flash session",
+    "readFirst": "HANDOFF.md"
+  },
+  "project": {
+    "name": "competitor-pricing-monitor",
+    "objective": "Daily Booking.com rate-shopping for StayVista: scrape 30 nights of forward rates for each StayVista property and its nearby competitors, and surface where StayVista is mispriced.",
+    "status": "in-progress",
+    "phase": "hardening — CSV is now the single source of truth; new 6-property Goa set resolved, geolocated and being scanned for competitors",
+    "started": "2026-05-13",
+    "percentComplete": 82
+  },
+  "architecture": {
+    "stack": [
+      "Node.js >=18 (CommonJS)",
+      "Playwright (Chrome over CDP)",
+      "vanilla HTML/CSS/JS single-file dashboard",
+      "JSON files on disk (no database)",
+      "Google Sheets (Apps Script Web App or service account)"
+    ],
+    "entryPoints": [
+      "serve.js (HTTP server + dashboard, port 3000)",
+      "refresh.js (price scraper)",
+      "import-properties.js (CSV -> config)",
+      "discover.js (market scan)"
+    ],
+    "keyModules": [
+      {
+        "name": "refresh.js",
+        "path": "refresh.js",
+        "purpose": "Harvest Booking.com cookies via Playwright, then scrape 30 nights x property x room at 80-way fetch concurrency with adaptive throttling."
+      },
+      {
+        "name": "import-properties.js",
+        "path": "import-properties.js",
+        "purpose": "Parse properties.csv into config/properties.json; collapse multi-unit rows; attach manual competitors; invoke discovery."
+      },
+      {
+        "name": "discover.js",
+        "path": "discover.js",
+        "purpose": "Full Booking.com market scan per property (city search + lat/lng search, API interception, cumulative cache)."
+      },
+      {
+        "name": "serve.js",
+        "path": "serve.js",
+        "purpose": "Static dashboard + ~30 JSON endpoints, SSE progress channels, spawns the other scripts as child processes."
+      },
+      {
+        "name": "discovery-engine",
+        "path": "lib/discovery-engine.js",
+        "purpose": "Weighted 8-factor competitor relevance scoring with hard rejection rules."
+      },
+      {
+        "name": "pricing-rows",
+        "path": "lib/pricing-rows.js",
+        "purpose": "Single source of truth for Google Sheets column order, row building and the change-detection hash."
+      },
+      {
+        "name": "chrome",
+        "path": "lib/chrome.js",
+        "purpose": "Cross-platform Chrome discovery and CDP launch; headless except for refresh.js which needs a visible login window."
+      },
+      {
+        "name": "holidays",
+        "path": "lib/holidays.js",
+        "purpose": "Indian holiday table 2025-2028 and long-weekend derivation, used for night typing."
+      },
+      {
+        "name": "geocode",
+        "path": "lib/geocode.js",
+        "purpose": "Nominatim geocoding with a persistent file cache plus haversine distance."
+      },
+      {
+        "name": "dashboard",
+        "path": "dashboard/index.html",
+        "purpose": "7 panel single-file SPA: Overview, Calendar, Long Weekends, Analysis, Suggestions, Discover (Leaflet map), History."
+      }
+    ],
+    "patterns": [
+      "properties.csv is the authoritative property list; config/properties.json is a derived cache that accumulates and must be filtered against the CSV",
+      "Playwright is used only to obtain cookies; the hot path is raw fetch() for speed",
+      "Write-then-rename for config writes so an interrupted run cannot truncate",
+      "Cumulative discovery cache: a property once discovered is never dropped",
+      "Booking.com slug is the true identity of a listing; Property IDs are reused across sheet revisions"
+    ]
+  },
+  "progress": {
+    "currentFocus": "Analyzed codebase architecture, execution pipeline, and scripts. Fixed cross-platform Windows-1252 decoder fallback in lib/csv-properties.js (BUG-018), restoring 73/73 passing unit tests. Verified CSV validation, dry-run syncs, report generation, and server execution.",
+    "worksEndToEnd": [
+      "CSV -> config import with multi-unit collapse, manual competitors and rotating backups",
+      "One CSV parser (lib/csv-properties.js) and one CSV writer (csvCell/csvCompetitorRow/readCsvLines/writeCsvLines in serve.js), pinned by tests",
+      "Share-link rows resolved automatically by a plain import (--links-only, no browser)",
+      "Booking.com market discovery: text + coordinate search, 8-factor relevance scoring, cumulative cache. Never triggered by rendering a panel (BUG-010)",
+      "Price scraping: 30 nights x property x room, ~80-way concurrency, adaptive 429 throttling, dated history snapshots with 90-day retention",
+      "Dashboard: 7 panels in dark AND light themes, SSE live refresh progress, Leaflet competitor map, Excel export that agrees with the on-screen calendar about sold-out nights",
+      "Google Sheets sync: Apps Script transport, idempotent keyed upsert, SHA-256 change detection, --watch; follows the CSV automatically",
+      "Reports: HTML + PDF rate analysis, fully data-driven",
+      "Scheduling: discovery at 02:00 and price scraping at 06:00 via wrapper .cmd files that capture their logs",
+      "Verification: npm test (73 tests) and verify-dashboard.js across both themes"
+    ],
+    "broken": [
+      "INFO: competitor curation has not caught up with the last scan — pools are 57-849 per property but config.competitors[] still carries the curated 1-15. Deliberate (refresh.js scrapes what is linked); the number to track is a user decision (T-015)",
+      "INFO: 19 of 51 competitors are sold out for all 30 nights, so they legitimately carry no rate",
+      "INFO: the Sheets sync has not been pushed since these changes — validated by --dry-run only, because a real run writes to the live sheet. Run npm run sync when ready",
+      "INFO: the dashboard needs a network for its CDN libraries (Chart.js, Leaflet, markercluster, xlsx). Offline, charts/map/export degrade but the panels still render. Only Chart.js is pinned with an SRI hash"
+    ],
+    "phase": "stable / hardened / verified",
+    "percentComplete": 99,
+    "verified2026_08_13": {
+      "npm test": "73/73 pass",
+      "verify-dashboard.js": "6 properties x 7 panels x 2 themes; 0 console errors, 0 page errors, 0 forced scans",
+      "theme contrast (token assertion)": "every surface >= 4.5:1 vs --text and >= 3:1 vs --text-muted, in both themes",
+      "sidebar freshness": "\"Updated 11h ago\" (was a permanent \"Loading...\")",
+      "build-price-report.js --property=3": "HTML + PDF clean — no NaN / Infinity / null% / markdown",
+      "API surface": "/api/config, /api/latest, /api/inventory, /api/csv-properties -> 200; unknown /api/* -> 404; raw ../ and ..%2f traversal -> 404",
+      "sync-sheets.js --dry-run": "31 rows x 61 cols, 57 properties",
+      "sync-inventory.js --dry-run": "pools read, +0 linked / -0 delisted, no unintended churn",
+      "import-properties.js --check": "6 own properties, 1 manual competitor",
+      "dashboard/index.html": "667 KB -> 295 KB (hardening, 08-12) -> 307 KB (light theme, 08-12 late) -> 310 KB (theme fixes, 08-13)"
+    }
+  },
+  "files": [
+    {
+      "path": "properties.csv",
+      "status": "stable",
+      "purpose": "Authoritative property list — 6 North Goa properties (IDs 1-6), all with canonical Booking.com hotel URLs. Windows-1252. The contract that drives everything."
+    },
+    {
+      "path": "lib/csv-properties.js",
+      "status": "modified",
+      "purpose": "THE ONLY CSV parser. Header aliases, RFC-4180 line splitting, Windows-1252 fallback, ID normalisation, slug extraction. Never re-implement this elsewhere (D-006)."
+    },
+    {
+      "path": "test/csv-properties.test.js",
+      "status": "created",
+      "purpose": "24 tests (node --test) pinning the CSV contract: Location dual meaning, competitor row ownership, repeated-ID collapse, encoding, share links, CRLF, legacy headers, write round-trip."
+    },
+    {
+      "path": "import-properties.js",
+      "status": "modified",
+      "purpose": "CSV -> config/properties.json. Now uses lib/csv-properties.js, auto-resolves slug-less share links via --links-only, and rotates config backups (newest 5)."
+    },
+    {
+      "path": "discover.js",
+      "status": "modified",
+      "purpose": "Per-property Booking.com market scan (text + coordinate search, API interception, 8-factor scoring). No longer writes the allDiscovered duplicate."
+    },
+    {
+      "path": "discover-all.js",
+      "status": "stable",
+      "purpose": "Runs discover.js for every own property in sequence."
+    },
+    {
+      "path": "refresh.js",
+      "status": "stable",
+      "purpose": "The scraper: 30 nights x property x room over raw fetch with logged-in cookies. Writes latest.dashboard.json + a dated history snapshot."
+    },
+    {
+      "path": "scheduled-refresh.js",
+      "status": "created",
+      "purpose": "Daily price-scrape runner: refresh.js -> optional Sheets sync -> data/refresh-log.json (last 30 runs). Non-zero exit so Task Scheduler shows failure."
+    },
+    {
+      "path": "scheduled-scan.js",
+      "status": "stable",
+      "purpose": "Daily discovery runner: discover.js --force for every own property."
+    },
+    {
+      "path": "run-scheduled-refresh.cmd",
+      "status": "created",
+      "purpose": "What the price-scrape Task Scheduler entry executes. Owns node resolution and log redirection — schtasks /TR does not run through a shell."
+    },
+    {
+      "path": "run-scheduled-scan.cmd",
+      "status": "created",
+      "purpose": "Same wrapper for the discovery task."
+    },
+    {
+      "path": "setup-daily-refresh.bat",
+      "status": "created",
+      "purpose": "Registers the 06:00 price-scrape task, pointing at the wrapper."
+    },
+    {
+      "path": "setup-daily-scan.bat",
+      "status": "modified",
+      "purpose": "Registers the 02:00 discovery task. Rewritten to use the wrapper — its old /TR embedded >> log 2>&1, which node received as argv and never redirected."
+    },
+    {
+      "path": "serve.js",
+      "status": "modified",
+      "purpose": "Dashboard HTTP server + all /api endpoints. Adds --no-open/NO_OPEN, a JSON 404 for unknown /api/* paths, and filters dataless history snapshots."
+    },
+    {
+      "path": "dashboard/index.html",
+      "status": "stable",
+      "purpose": "The entire 7-panel dashboard in one ~310 KB file, in dark AND light themes. Ships with EMPTY PORTFOLIO/COMPETITORS — filled at runtime from /api/config and /api/latest. Every colour comes from a CSS token defined in both :root and [data-theme=\"light\"]; never hardcode a surface (BUG-015). Coordinates validated at every boundary (BUG-004)."
+    },
+    {
+      "path": "verify-dashboard.js",
+      "status": "stable",
+      "purpose": "Drives every panel for every property in a real browser, in BOTH themes (--theme=dark|light|both, default both). Fails on thin or artifact-bearing panels, any forced scan triggered merely by browsing, a sidebar still reading \"Loading...\", and any theme surface that does not contrast with that theme's text (>= 4.5:1 vs --text, >= 3:1 vs --text-muted). npm run verify:dashboard."
+    },
+    {
+      "path": "build-price-report.js",
+      "status": "modified",
+      "purpose": "HTML + PDF rate report. Now fully data-driven — no hardcoded competitor names, rates or premiums; dorm track gated on the property actually having one (D-007)."
+    },
+    {
+      "path": "prune-to-csv.js",
+      "status": "modified",
+      "purpose": "Scopes every stored record to the sheet using slug identity. Now uses lib/csv-properties.js. --dry-run first; backs up automatically."
+    },
+    {
+      "path": "resolve-property-coords.js",
+      "status": "modified",
+      "purpose": "Share link -> canonical URL + exact coordinates from the property page JSON-LD. Now uses lib/csv-properties.js and adds --links-only (stage 1 only, no browser)."
+    },
+    {
+      "path": "sync-sheets.js",
+      "status": "stable",
+      "purpose": "Pushes the dashboard payload to Google Sheets. Idempotent keyed upsert with SHA-256 change detection."
+    },
+    {
+      "path": "config/sheets.json",
+      "status": "stable",
+      "purpose": "Sheets endpoint + shared secret (gitignored). No property pin, so the sync follows the CSV automatically."
+    },
+    {
+      "path": "config/properties.json",
+      "status": "stable",
+      "purpose": "DERIVED CACHE, not a source of truth — accumulates. 6 own entries + 62 competitor entries. Always reconcile against the CSV."
+    },
+    {
+      "path": "data/latest.dashboard.json",
+      "status": "stable",
+      "purpose": "What the dashboard reads. 6 own + 62 competitors, 30 nights, scraped 2026-08-11."
+    },
+    {
+      "path": "data/discovery-cache.json",
+      "status": "stable",
+      "purpose": "Cumulative per-property market scans. 266KB after dropping the allDiscovered duplicate. fullMarket is canonical; results is the ranked subset."
+    },
+    {
+      "path": "data/refresh-log.json",
+      "status": "created",
+      "purpose": "Last 30 scheduled price-scrape runs with exit codes and a coverage summary."
+    },
+    {
+      "path": "_backup-2026-08-10-15-39-41/",
+      "status": "stable",
+      "purpose": "249MB. The ONLY copy of the retired 737-property portfolio and the 244MB pre-prune discovery cache. Do not delete before resolving T-016."
+    },
+    {
+      "path": "lib/inventory.js",
+      "status": "created",
+      "purpose": "Inventory state machine: classifyProbe / delistCandidates / applyVerdict / reconcileTracked / purgeableIds. Only a 404/410 delists; every ambiguous signal keeps the property. All id comparisons canonicalised (pool uses hyphens, config uses underscores)."
+    },
+    {
+      "path": "sync-inventory.js",
+      "status": "created",
+      "purpose": "Links new listings up to a target, confirms delist candidates against their Booking.com page, deactivates confirmed departures, writes data/inventory-log.json. --dry-run/--property/--target/--miss-threshold/--no-confirm/--purge."
+    },
+    {
+      "path": "test/inventory.test.js",
+      "status": "created",
+      "purpose": "38 tests pinning the delisting rules — notably that 429/5xx/network errors never delist, and that hyphen/underscore id forms match in both directions."
+    },
+    {
+      "path": "data/inventory-log.json",
+      "status": "generated",
+      "purpose": "Churn feed: added / delisted / moved events per run, last 90 runs. Served by GET /api/inventory."
+    },
+    {
+      "path": "lib/json-store.js",
+      "status": "created",
+      "purpose": "Optimistic concurrency for the JSON files used as the database: readTracked/writeIfUnchanged. A long-window writer ABORTS (exit 3) rather than clobbering a concurrent edit."
+    },
+    {
+      "path": "lib/market-pool.js",
+      "status": "created",
+      "purpose": "Region clustering (district+state from property-meta, not Booking city) and pool union/rescope. Shares the inventory, never the ranking."
+    },
+    {
+      "path": "pool-market.js",
+      "status": "created",
+      "purpose": "Reports/applies location pooling. Its --dry-run is what showed that storing per-property copies takes the cache 2.3MB -> 10MB, which is why serve.js unions on read instead."
+    },
+    {
+      "path": "data/config-audit.json",
+      "status": "generated",
+      "purpose": "Audit trail for config-mutating endpoints (reset-competitors, discover/commit, add-competitor): caller, user-agent, referer, before/after tracked counts."
+    }
+  ],
+  "tasks": {
+    "inProgress": [],
+    "todo": [
+      "T-023: Find out what is calling POST /api/reset-competitors — it emptied a property's competitors[] twice on 2026-08-11 and the user confirmed neither was them. data/config-audit.json now records caller, user-agent, referer and before/after counts. No recurrence as of 2026-08-13, and one plausible contributor (the Discover tab's silent background scans) was removed in BUG-010 · priority: high",
+      "T-015: Decide how many competitors to track per property, then re-link. Pools are now 57-849 per property but config.competitors[] carries the curated 1-15. node sync-inventory.js --target=<n> is the lever · priority: medium",
+      "T-016: Decide the fate of the retired 737-property portfolio. _backup-2026-08-10-15-39-41/ (249 MB) is the ONLY copy of its data · priority: medium"
+    ],
+    "done": [
+      {
+        "id": "T-025",
+        "summary": "Light theme finished and verified: 3 defects fixed (BUG-015..BUG-017), four hardcoded surfaces replaced with per-theme tokens, verify-dashboard.js extended to both themes plus a token-level contrast assertion proved non-vacuous by reintroducing the bug. Also closed the missing-Discover-button question: a deliberate retirement, not a regression",
+        "done": "2026-08-13"
+      },
+      {
+        "id": "T-024",
+        "summary": "Production-hardening pass across the whole codebase: 21 bugs fixed, 356 KB of stale baked-in portfolio data and ~500 lines of unreachable code removed, every JSON/CSV write made atomic and single-implementation, two server crash paths closed",
+        "done": "2026-08-12"
+      },
+      {
+        "id": "T-022",
+        "summary": "Closed as already resolved: latest.dashboard.json has 0 orphan competitor records and 0 dangling references",
+        "done": "2026-08-12"
+      },
+      {
+        "id": "T-018",
+        "summary": "Config write race closed with lib/json-store.js optimistic concurrency on the three long-window writers, plus an audit trail on the mutating serve.js endpoints",
+        "done": "2026-08-11"
+      },
+      "T-001",
+      "T-002",
+      "T-003",
+      "T-004",
+      "T-005",
+      "T-006",
+      "T-007",
+      "T-008",
+      "T-009",
+      "T-010",
+      "T-012",
+      "T-013",
+      "T-014",
+      "T-017",
+      "T-019",
+      "T-020",
+      "T-021"
+    ],
+    "backlog": [
+      "Resolve competitor beds (discover.js hardcodes null, so the 15% capacity factor is a flat 0.5)",
+      "Deduplicate co-located listings in shared apartment complexes",
+      "Track more than 30 nights forward",
+      "Second OTA source for cross-checking rates",
+      "Alerting on large competitor rate moves",
+      "Investigate the ~100 competitor no-data nights per full refresh (likely 429 throttling)"
+    ]
+  },
+  "decisions": [
+    {
+      "id": "D-005",
+      "date": "2026-08-10",
+      "decision": "Resolve share links by following the redirect, and take coordinates from the Booking.com property page rather than a Nominatim name lookup.",
+      "rationale": "A plain redirect-follow recovers the canonical /hotel/in/<slug> URL, which unblocks import, scraping AND identity checks at once. Coordinates then come from the listing itself (JSON-LD geo), which is authoritative — a Nominatim guess on a name like \"Studio 109 Apartment by tisyastays\" would be unreliable. A bare fetch of the property page is not enough: Booking.com returns a 202 bot-check stub, so the page must be loaded in Chrome."
+    },
+    {
+      "id": "D-001",
+      "date": "2026-08-10",
+      "decision": "properties.csv is the single source of truth for which properties exist; the dashboard selector is driven from a live parse of it, not from config/properties.json.",
+      "rationale": "config accumulates: an import run with --property=<id> preserves every other entry, so IDs deleted from the CSV survive in config and latest.dashboard.json forever. 307 such orphans were showing in the dropdown."
+    },
+    {
+      "id": "D-002",
+      "date": "2026-08-10",
+      "decision": "An empty CSV means zero properties, not 'unknown' — the dropdown blanks. Only an unreachable server or malformed reply falls back to the configured list.",
+      "rationale": "User explicitly required that clearing the sheet clears the dropdown. Tracked with a separate CSV_LOADED flag rather than inferring from set size."
+    },
+    {
+      "id": "D-003",
+      "date": "2026-08-10",
+      "decision": "Column B (Property) is the authoritative dropdown label, and scraped data only carries over to a CSV row when the row's Booking slug matches the config entry's slug.",
+      "rationale": "Property IDs are reused across sheet revisions. The new CSV numbers rows 1-6, colliding with old IDs 1 (Backspace Anjuna Beach) and 5 (The Boulevard Villa) — without this guard those old names and prices would appear under the new property names."
+    }
+  ],
+  "bugs": {
+    "open": [],
+    "fixed": [
+      {
+        "id": "BUG-018",
+        "summary": "Node.js TextDecoder('windows-1252') decoded bytes 0x80-0x9F as ISO-8859-1 code points: added decodeWindows1252 with WIN1252_MAP lookup in lib/csv-properties.js",
+        "fixed": "2026-09-21"
+      },
+      {
+        "id": "BUG-017",
+        "summary": "borderColor: 'var(--gold)' in a Chart.js dataset — a canvas cannot resolve a CSS custom property, so the distribution chart's bar border silently never drew",
+        "fixed": "2026-08-13"
+      },
+      {
+        "id": "BUG-016",
+        "summary": "The sidebar status read \"Loading...\" forever: #lastUpdated shipped as a literal placeholder and its only writer was the SSE handler, which fires exclusively during a refresh",
+        "fixed": "2026-08-13"
+      },
+      {
+        "id": "BUG-015",
+        "summary": "The light theme made Leaflet map popups and the confirm modal unreadable (1.03:1) — four surfaces were hardcoded dark while their text read var(--text)",
+        "fixed": "2026-08-13"
+      },
+      {
+        "id": "BUG-014",
+        "summary": "Three divergent CSV writers; one never escaped a quote inside a competitor name, corrupting that row and every row after it",
+        "fixed": "2026-08-12"
+      },
+      {
+        "id": "BUG-013",
+        "summary": "Two uncaught-TypeError server crash paths from child-process events arriving after job cleanup",
+        "fixed": "2026-08-12"
+      },
+      {
+        "id": "BUG-012",
+        "summary": "Statistics reported over an empty sample: calcStdDev([]) is 0, so the \"Most Stable Competitor\" panel named the competitor it knew least about",
+        "fixed": "2026-08-12"
+      },
+      {
+        "id": "BUG-011",
+        "summary": "Sold-out long-weekend nights were labelled \"Hold\", endorsing a rate nobody can book",
+        "fixed": "2026-08-12"
+      },
+      {
+        "id": "BUG-010",
+        "summary": "Opening the Discover tab started a forced Booking.com crawl per property, rewriting the discovery cache and config in the background",
+        "fixed": "2026-08-12"
+      },
+      {
+        "id": "BUG-009",
+        "summary": "The Long Weekends panel priced dates that were never scraped — inferPrice() medians shown as quoted rates for Diwali, Christmas and New Year",
+        "fixed": "2026-08-12"
+      },
+      {
+        "id": "BUG-008",
+        "summary": "Map pins showed \"—\" for properties that did have a rate",
+        "fixed": "2026-08-11"
+      },
+      {
+        "id": "BUG-007",
+        "summary": "Unknown /api/* paths returned 644KB of dashboard HTML with a 200; the client then JSON.parse-d a page",
+        "fixed": "2026-08-11"
+      },
+      {
+        "id": "BUG-006",
+        "summary": "build-price-report.js refused to run (gated on a discovery card price that is always null) and, forced past that, asserted a former ID 1 hostel competitors, rates and premiums for an unrelated villa",
+        "fixed": "2026-08-11"
+      },
+      {
+        "id": "BUG-005",
+        "summary": "discover.js text search returns 0 properties — closed as NOT a defect: the ss= search is intermittent, not broken (0 cards one day, 24 the next). Pool sizes are not comparable between scans.",
+        "fixed": "2026-08-11"
+      },
+      {
+        "id": "BUG-004",
+        "summary": "Discover panel crashed on properties without coordinates (unawaited geocode Promise poisoned the coord cache; L.latLng returns null rather than throwing)",
+        "fixed": "2026-08-10"
+      },
+      {
+        "id": "BUG-003",
+        "summary": "discovery-cache.json duplicated every candidate via the allDiscovered alias of fullMarket (21% of the file); 377KB -> 266KB",
+        "fixed": "2026-08-11"
+      },
+      {
+        "id": "BUG-002",
+        "summary": "meta.today went stale on the --property= merge path; the merge now takes the fresh run meta wholesale",
+        "fixed": "2026-08-11"
+      },
+      {
+        "id": "BUG-001",
+        "summary": "Booking.com share links carry no slug, so import and scrape both failed; recovered by following the redirect",
+        "fixed": "2026-08-10"
+      },
+      {
+        "id": "BUG-000",
+        "summary": "Property dropdown showed 307 properties absent from the CSV and would mislabel reused IDs",
+        "fixed": "2026-08-10"
+      }
+    ]
+  },
+  "dependencies": [
+    {
+      "name": "playwright",
+      "version": "^1.45.0",
+      "why": "Drive Chrome over CDP to obtain logged-in Booking.com cookies and to scrape search pages; also renders report PDFs. The only dependency."
+    }
+  ],
+  "assumptions": [
+    "A human keeps properties.csv correct; it is the contract between the operator and the system",
+    "Booking.com cookies from a logged-in Chrome profile are needed for reliable price data",
+    "Booking.com page structure (the b_rooms_available_and_soldout JSON blob) stays stable",
+    "Everything runs locally on Windows against a user-visible Chrome; there is no server deployment"
+  ],
+  "nextSteps": [
+    "ASK the user how many competitors each property should track, then run node sync-inventory.js --target=<n> (T-015)",
+    "ASK the user whether the 737-property portfolio is retired for good before touching _backup-2026-08-10-15-39-41/ (T-016)",
+    "Run npm run sync when the user wants the live Google Sheet updated — only --dry-run has been exercised",
+    "Run setup-daily-scan.bat and setup-daily-refresh.bat once each to register the two scheduled tasks — nothing runs automatically until then",
+    "Watch data/config-audit.json if a property's competitors[] ever empties again (T-023)"
+  ],
+  "lessonsLearned": [
+    "A themed app has no hardcoded surface colours — text and the surface behind it must come from the same theme, or one moves without the other (BUG-015)",
+    "A rendering sweep cannot catch a contrast bug: the DOM is perfect and only the pixels are wrong. Assert the invariant at the token level instead",
+    "A guard you cannot see fail is not a guard — reintroduce the bug and confirm the check goes red before trusting it",
+    "var() is resolved by the CSS engine, never by a canvas: Chart.js silently ignores an unparseable colour and keeps the previous one (BUG-017)",
+    "A placeholder written in markup needs an owner on EVERY path that can reach it, including the error paths where a stale \"Loading...\" is most misleading (BUG-016)",
+    "inferPrice() is not evidence a night exists — it answers \"what would this plausibly cost\", not \"what did Booking.com quote\" (BUG-009)",
+    "Rendering a panel must never start a scrape (BUG-010)",
+    "A zero computed from an empty input is not a measurement — return null and render \"—\" with a reason (BUG-012)",
+    "Absence from a scan is not evidence a listing is gone: Booking.com hides properties with no availability for the probed night",
+    "config/properties.json is a cache, not a source of truth — always reconcile it against properties.csv",
+    "Property IDs are reused across CSV revisions; the Booking.com slug is the only reliable identity for a listing",
+    "Never re-implement the CSV parser — lib/csv-properties.js is the one implementation and tests pin it (D-006)",
+    "Reports must compute every name and number they state; build-price-report.js hardcoded a former ID 1 hostel competitors and asserted them for a villa (D-007)",
+    "Booking.com ss= text search is intermittent, not broken — so candidate pool sizes are not comparable between scans",
+    "schtasks /TR does not run through a shell: >> log 2>&1 written there becomes argv and redirects nothing",
+    "Excel locks properties.csv while open; writes from Node fail with EBUSY",
+    "properties.csv is Windows-1252 — decode strict UTF-8 first, then fall back, or names become mojibake",
+    "Leaflet L.latLng() returns null for malformed coordinates instead of throwing, so bad data surfaces later from inside the library",
+    "A bare fetch cannot read a Booking.com property page (HTTP 202 bot-check stub); page metadata needs the browser, prices do not",
+    "Writing tests for a contract you think is settled finds real bugs — the CSV tests immediately exposed lossy escaped-quote handling",
+    "Absence from a discovery scan is NOT evidence of delisting: the scan probes one night and Booking.com hides unavailable properties, so 12 of 24 absent properties were all live on direct probe. Only a 404 on the property page delists.",
+    "config/properties.json has five uncoordinated read-modify-writers, so concurrent runs silently lose changes — never scan while the dashboard is in use",
+    "Analysis thresholds must be relative to the property ADR — the portfolio spans 6x, so any fixed rupee threshold means something different at each end",
+    "A least-squares slope without R2 is not a trend; weekday/weekend oscillation alone produces a non-zero slope",
+    "Math.round(null*100) is 0, so every unmodelled value rendered as a confident zero until each was made explicitly nullable",
+    "Absence from a scan must be scope-aware: 763 of property 1s pool were out of the scans reach, not gone",
+    "pkill -f <port> never matches a server whose port comes from an env var — kill by PID or you test stale code"
+  ]
+}
