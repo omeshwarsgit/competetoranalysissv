@@ -6,6 +6,16 @@
 
 ## 2026-09-21
 
+### 17:08 — Initialized Git repository and pushed to GitHub (`omeshwarsgit/competetoranalysissv`)
+
+- **Git setup**:
+  - Initialized git repository on branch `main`.
+  - Updated [.gitignore](file:///Users/omeshwarshukla/Downloads/competitor-pricing-monitor/.gitignore) to exclude local Claude permissions, OS `.DS_Store` files, and `config/*.bak.json` files while preserving pipeline source and tracked data.
+- **Created GitHub Repository**:
+  - Created public repository `competetoranalysissv` under user `omeshwarsgit` via GitHub API.
+  - Linked remote `origin` to `https://github.com/omeshwarsgit/competetoranalysissv.git`.
+  - Staged, committed, and pushed initial codebase to `origin/main`.
+
 ### 16:17 — Analysis & run; fixed Windows-1252 decoder fallback (BUG-018); 73/73 unit tests passing
 
 - **Analyzed codebase**: architecture, data pipeline, server on :3000, Google Sheets integration, discovery engine, and Playwright scraping.
