@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "updatedAt": "2026-09-16T13:23:14.026Z",
+  "updatedAt": "2026-09-22T06:37:41.649Z",
   "properties": [
     {
       "id": "1",
@@ -12,11 +12,7 @@
       "country": "IN",
       "propertyType": "hotel",
       "match": "1",
-      "competitors": [
-        "baagh_house_villa",
-        "stunning_hilltop_3br_villa_with_pool_and_river_view",
-        "the_boss_house"
-      ],
+      "competitors": [],
       "deal": 0,
       "beds": 1,
       "pax": 2,
@@ -917,61 +913,6 @@
       "amenities": [],
       "lat": 15.5103549,
       "lng": 73.7737398
-    },
-    {
-      "id": "baagh_house_villa",
-      "slug": "baagh-house-villa",
-      "type": "comp",
-      "display": "Baagh House Villa",
-      "location": "Marra",
-      "city": "Marra",
-      "country": "IN",
-      "propertyType": "villa",
-      "match": "baagh house villa",
-      "competitors": [],
-      "deal": 0,
-      "beds": 1,
-      "pax": 2,
-      "amenities": [],
-      "lat": 15.5339449,
-      "lng": 73.7866286,
-      "rating": 5
-    },
-    {
-      "id": "stunning_hilltop_3br_villa_with_pool_and_river_view",
-      "slug": "stunning-hilltop-3br-villa-with-pool-and-river-view",
-      "type": "comp",
-      "display": "White House by Hireavilla - Stunning Hilltop 3BHK Villa with Pool and River View",
-      "location": "Marra",
-      "city": "Marra",
-      "country": "IN",
-      "propertyType": "villa",
-      "match": "white house by hireavilla stunning hilltop 3bhk villa with pool and river view",
-      "competitors": [],
-      "deal": 0,
-      "beds": 1,
-      "pax": 2,
-      "amenities": [],
-      "lat": 15.5267334,
-      "lng": 73.7865567
-    },
-    {
-      "id": "the_boss_house",
-      "slug": "the-boss-house",
-      "type": "comp",
-      "display": "The Boss House",
-      "location": "Marra",
-      "city": "Marra",
-      "country": "IN",
-      "propertyType": "property",
-      "match": "the boss house",
-      "competitors": [],
-      "deal": 0,
-      "beds": 1,
-      "pax": 2,
-      "amenities": [],
-      "lat": 15.6875510178301,
-      "lng": 73.706845513245
     },
     {
       "id": "stayvista_at_arden_blu_with_pool_bar",
