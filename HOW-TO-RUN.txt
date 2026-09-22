@@ -1,0 +1,37 @@
+========================================================================
+   StayVista — Competitor Price Analyzer: Quick Start Guide
+========================================================================
+
+Welcome! This application requires ZERO manual installation or technical setup.
+Everything (Node.js, dependencies, and browser engines) will be configured 
+automatically the first time you run it.
+
+------------------------------------------------------------------------
+▶ IF YOU ARE ON WINDOWS:
+------------------------------------------------------------------------
+1. Double-click the file named:
+   START-WINDOWS.bat
+
+2. That's it! A window will open, configure everything automatically, 
+   and launch the dashboard in your web browser at http://localhost:3000.
+
+   * Keep the black command window open while using the application.
+   * To stop the app, simply close the window.
+
+------------------------------------------------------------------------
+▶ IF YOU ARE ON MAC:
+------------------------------------------------------------------------
+1. Double-click the file named:
+   START-MAC.command
+
+2. That's it! Terminal will open, configure everything automatically, 
+   and launch the dashboard in your browser at http://localhost:3000.
+
+   * Keep the terminal window open while using the application.
+   * To stop the app, press Ctrl+C or close the window.
+   * (If macOS shows a security prompt on first open, right-click the file 
+     and select "Open").
+
+========================================================================
+All future launches will open instantly in 1-2 seconds!
+========================================================================

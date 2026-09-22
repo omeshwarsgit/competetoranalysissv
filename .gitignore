@@ -1,5 +1,6 @@
 .browser-profile/
 /node_modules/
+.runtime/
 
 # Google Sheets sync — NEVER commit service-account keys
 config/google-service-account.json
